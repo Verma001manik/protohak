@@ -1,0 +1,94 @@
+what are we building ? 
+tcp based chat room protocol 
+
+
+what are the requirements?
+first the client connects to the server
+
+do we join him instantly ?
+no 
+then how 
+
+the server asks the client for his name
+the client gives his name 
+atleast 1 character and max 16 characters of alphanumeric 
+
+unique names? 
+yes 
+
+if illegal name , disconnect the client without informing anyone 
+
+
+when name is given 
+server will make the name join the room 
+and announce to everone in the room that the new name has joined the room 
+
+ex:  "A user joins"
+
+and also the server must list the names of everyone present in the room (present)  except the newer client
+to the newer client
+
+
+The room contains: bob, charlie, dave
+
+
+--> Welcome to budgetchat! What shall I call you?
+<-- alice
+--> * The room contains: bob, charlie, dave
+<-- Hello everyone
+--> [bob] hi alice
+--> [charlie] hello alice
+--> * dave has left the room
+
+this is the typical workflow 
+
+so the typical proces must be something like below 
+
+we need a server with multiple clients
+single client is not possible because we need other people to chat 
+
+so we need to store the connected users and also people in the room 
+
+what is the difference? 
+the connected users do not have a name for now , but people in the room do ? 
+should we include people who are in the room to be included in the connected list? 
+yeah that could be possible or we could create another list of people with no names and when broadcasting the 
+message we could just send the messgae to the room list that would be alright 
+
+i think room list is good for us to broacast message 
+if someone from connected list creates their name, they will be added to this room list 
+yeah that seems nice to me 
+
+
+Upon connection
+    Setting the user's name
+
+
+    Presence notification
+
+    Chat messages
+
+
+the client is getting disconnected , we need to prevent this shit 
+from happening 
+
+how to take input from the client when connected to the server 
+
+how to send messages to selected people 
+how to send 'user joined' message to selected people 
+
+how can the server send to above people 
+
+we need to store the conn object of the client
+why 
+we need to send message sometimes to selected people and sometimes to single person 
+for sending the above message , we need the client object
+
+so should we also 
+
+we need to sendto to each client that user has joined 
+that means something like 
+
+for user that is not the new user:
+    send message that new user has joined 
+    
