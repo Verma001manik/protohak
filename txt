@@ -1,94 +1,44 @@
-what are we building ? 
-tcp based chat room protocol 
+what is given 
+
+we need to create a proxy server
+but what is proxy server
+
+it is a server that is between the client and server 
+
+so that means we need to connect to both the client and the server
+yes
+
+we need to pass message from client to upstream server and backandforth
+but we are in the middle 
 
 
-what are the requirements?
-first the client connects to the server
 
-do we join him instantly ?
-no 
-then how 
-
-the server asks the client for his name
-the client gives his name 
-atleast 1 character and max 16 characters of alphanumeric 
-
-unique names? 
-yes 
-
-if illegal name , disconnect the client without informing anyone 
+when the client sends message to the proxy , let proxy send it to upstream server
+and vice versa
 
 
-when name is given 
-server will make the name join the room 
-and announce to everone in the room that the new name has joined the room 
+so if a client is connected to my proxy , i need to make a request to server
 
-ex:  "A user joins"
-
-and also the server must list the names of everyone present in the room (present)  except the newer client
-to the newer client
+server will give me 'hey what is your name' 
+i will send this message to client 
+clietn says bob , i send bob to server
+and so on...
 
 
-The room contains: bob, charlie, dave
+the only catch is we need to modify the address that the client passes and change it 
+so 
+
+A substring is considered to be a Boguscoin address if it satisfies all of:
+
+    it starts with a "7"
+    it consists of at least 26, and at most 35, alphanumeric characters
+    it starts at the start of a chat message, or is preceded by a space
+    it ends at the end of a chat message, or is followed by a space
+
+change the client bogus address to tonys adress which is 7YWHMfk9JZe0LM0g1ZauHuiSxhI
 
 
---> Welcome to budgetchat! What shall I call you?
-<-- alice
---> * The room contains: bob, charlie, dave
-<-- Hello everyone
---> [bob] hi alice
---> [charlie] hello alice
---> * dave has left the room
+ok so the first thing would be to 
 
-this is the typical workflow 
-
-so the typical proces must be something like below 
-
-we need a server with multiple clients
-single client is not possible because we need other people to chat 
-
-so we need to store the connected users and also people in the room 
-
-what is the difference? 
-the connected users do not have a name for now , but people in the room do ? 
-should we include people who are in the room to be included in the connected list? 
-yeah that could be possible or we could create another list of people with no names and when broadcasting the 
-message we could just send the messgae to the room list that would be alright 
-
-i think room list is good for us to broacast message 
-if someone from connected list creates their name, they will be added to this room list 
-yeah that seems nice to me 
-
-
-Upon connection
-    Setting the user's name
-
-
-    Presence notification
-
-    Chat messages
-
-
-the client is getting disconnected , we need to prevent this shit 
-from happening 
-
-how to take input from the client when connected to the server 
-
-how to send messages to selected people 
-how to send 'user joined' message to selected people 
-
-how can the server send to above people 
-
-we need to store the conn object of the client
-why 
-we need to send message sometimes to selected people and sometimes to single person 
-for sending the above message , we need the client object
-
-so should we also 
-
-we need to sendto to each client that user has joined 
-that means something like 
-
-for user that is not the new user:
-    send message that new user has joined 
-    
+first receive the data from the client 
+send that data to the upstream server 
