@@ -134,6 +134,21 @@ class JobServer:
         
     def handle_abort(self,data):
         data = json.loads(data)
+        #{"request":"abort","id":12345}
+        job_id  =None 
+        for k,v in data.items():
+            if k== "id":
+                job_id = v 
+
+        if not job_id:
+            print("job id not given :")
+            return 
+        
+        res = self.abort(job_id)
+        print("jobs  : ",job_store  )
+        return res 
+    
+
     def handle_client(self,conn,addr):
         print(f"Client Connected from {addr}")
         try:
@@ -160,10 +175,13 @@ class JobServer:
                     pass 
 
                 elif request_type == 'abort':
-                    pass 
+                    res =self.handle_abort(data)
+                    res =json.dumps(res)
+                    res = res.encode()
+                    conn.sendall(res)
+
                 elif request_type == 'delete':
                     pass 
-
             
         except Exception as e : 
             print(f"Error handling client {addr}: {e}")
