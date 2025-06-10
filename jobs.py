@@ -84,6 +84,9 @@ class JobServer:
             return {"status": "ok"}
         return  {"status": "not-found"}
     def delete(self,job_id):
+        if not job_id:
+            print("need to provide job id ")
+            return 
         if job_id in job_store:
             job_store[job_id]["status"] = "deleted"
 
@@ -145,10 +148,27 @@ class JobServer:
             return 
         
         res = self.abort(job_id)
-        print("jobs  : ",job_store  )
+        #print("jobs  : ",job_store  )
         return res 
     
+    def handle_delete(self,data):
+        data =json.loads(data)
+        #{"request":"delete","id":12345}
+        job_id = None 
 
+        for k,v in data.items() :
+            if k == 'id':
+                job_id = v 
+
+        if not job_id:
+            print("job id is wrong mate")
+            return 
+        print("jobs before deleting  : ",job_store  )
+        res = self.delete(job_id)
+
+        print("jobs after deleting : ",job_store  )
+        return res 
+    
     def handle_client(self,conn,addr):
         print(f"Client Connected from {addr}")
         try:
@@ -181,7 +201,11 @@ class JobServer:
                     conn.sendall(res)
 
                 elif request_type == 'delete':
-                    pass 
+                    res = self.handle_delete(data)
+                    res = json.dumps(res)
+                    res = res.encode()
+                    conn.sendall(res)
+
             
         except Exception as e : 
             print(f"Error handling client {addr}: {e}")
